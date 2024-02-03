@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -56,7 +53,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Establishment {
+model Barbershop {
   id       String    @id @default(uuid())
   name     String
   address  String
@@ -66,23 +63,23 @@ model Establishment {
 }
 
 model Booking {
-  id              String        @id @default(uuid())
-  establishmentId String
-  establishment   Establishment @relation(fields: [establishmentId], references: [id])
-  serviceId       String
-  service         Service       @relation(fields: [serviceId], references: [id])
-  userId          String
-  user            User          @relation(fields: [userId], references: [id])
-  date            DateTime      @db.Timestamp
+  id           String     @id @default(uuid())
+  barbershopId String
+  barbershop   Barbershop @relation(fields: [barbershopId], references: [id])
+  serviceId    String
+  service      Service    @relation(fields: [serviceId], references: [id])
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  date         DateTime   @db.Timestamp
 }
 
 model Service {
-  id              String        @id @default(uuid())
-  establishmentId String
-  establishment   Establishment @relation(fields: [establishmentId], references: [id])
-  name            String
-  description     String
-  price           Decimal       @db.Decimal(10, 2)
-  imageUrl        String
-  bookings        Booking[]
+  id           String     @id @default(uuid())
+  barbershopId String
+  barbershop   Barbershop @relation(fields: [barbershopId], references: [id])
+  name         String
+  description  String
+  price        Decimal    @db.Decimal(10, 2)
+  imageUrl     String?
+  bookings     Booking[]
 }
