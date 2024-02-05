@@ -7,7 +7,7 @@ function Header() {
   return (
     <Card>
       <CardContent className="flex justify-between p-5 items-center">
-        <Image src="/Logo.png" alt="SIMP Logo" width={120} height={22} />
+        <Image src="/Logo.png" alt="SIMP Logo"height={22} width={120}  />
         <Button variant="outline" size="icon" className="h-8 w-8">
           <MenuIcon size={16} />
         </Button>
