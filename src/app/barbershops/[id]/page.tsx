@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button"
 import { db } from "../../../../lib/prisma"
 import { BarbershopInfo } from "./component/barbershop-info"
 import { ServiceItem } from "./component/service-item"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
 
 interface BarbershopDatilsPageProps {
@@ -12,6 +14,7 @@ interface BarbershopDatilsPageProps {
 }
 
 async function BarbershopDatailsPage({params}: BarbershopDatilsPageProps) {
+  const session = await getServerSession(authOptions)
 
   const barbershop = await db.barbershop.findUnique({
     where: {
@@ -30,7 +33,7 @@ async function BarbershopDatailsPage({params}: BarbershopDatilsPageProps) {
     <div>
       <BarbershopInfo Barbershop={barbershop} />
       {barbershop.services.map((service) => (
-        <ServiceItem key={service.id} service={service} />
+        <ServiceItem key={service.id} service={service} isAuthenticated={!!session}/>
       ))}
     </div>
   )
