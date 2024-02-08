@@ -3,17 +3,18 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Barbershop, Service } from "@prisma/client"
+import { Barbershop, Booking, Service } from "@prisma/client"
 import { ptBR } from "date-fns/locale";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image"
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { generateDayTimeList } from "../helpers/hours";
 import { format, setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../actions/save-booking";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner"
 import { useRouter } from "next/navigation";
+import { getDayBooking } from "../actions/get-day-booking";
 
 
 interface ServiceItemProps {
@@ -28,8 +29,23 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
   const [hour, setHour] = useState<string | undefined>()
   const [submitIsLoading, setSubmitIsLoading] = useState(false)
   const [sheetIsOpen, setSheetIsOpen] = useState(false)
+  const [dayBookings, setDayBookings] = useState<Booking[] | undefined>()
 
   const route = useRouter()
+
+  console.log({dayBookings})
+
+  useEffect(() => {
+    if (!date) {
+      return
+    }
+    const refreshAvaliableHours = async () => {
+      const _dayBookings = await getDayBooking(barbershop.id, date)
+      setDayBookings(_dayBookings)
+    }
+
+    refreshAvaliableHours()
+  }, [date])
   
   function handleCalendarChange(date: Date | undefined) {
     setDate(date);
@@ -69,6 +85,7 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
           onClick: () => route.push("/bookings"),
         },
       })
+      
     } catch (error) {
       console.log({error})
     }
@@ -80,8 +97,29 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
 
 
  const timeList = useMemo(() => {
-  return generateDayTimeList(date || new Date())
- }, [date])
+  if (!date) {
+    return []
+  }
+
+  return generateDayTimeList(date || new Date()).filter((time) => {
+    const timeHour = Number(time.split(":")[0])
+    const timeMinutes = Number(time.split(":")[1])
+
+    // Logica para nao mostrar os horarios agendados
+    const booking = dayBookings?.find((booking) => {
+      const bookingHour = booking.date.getHours()
+      const bookingMinutes = booking.date.getMinutes()
+
+      return bookingHour === timeHour && bookingMinutes === timeMinutes
+    })
+
+    if (!booking) {
+      return true
+    }
+
+    return false
+  })
+ }, [date, dayBookings])
 
   return (
     <Card className="flex gap-1 my-2 mx-5">
