@@ -12,6 +12,9 @@ import { generateDayTimeList } from "../helpers/hours";
 import { format, setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../actions/save-booking";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner"
+import { useRouter } from "next/navigation";
+
 
 interface ServiceItemProps {
   barbershop: Barbershop;
@@ -24,6 +27,9 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
   const [date, setDate] = useState<Date | undefined>(undefined)
   const [hour, setHour] = useState<string | undefined>()
   const [submitIsLoading, setSubmitIsLoading] = useState(false)
+  const [sheetIsOpen, setSheetIsOpen] = useState(false)
+
+  const route = useRouter()
   
   function handleCalendarChange(date: Date | undefined) {
     setDate(date);
@@ -54,11 +60,22 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
         userId: (data.user as any).id,
         date: newDate
       })
+      setDate(undefined)
+      setHour(undefined)
+      toast("Reserva realizada com sucesso", {
+        description: format(newDate, "'Para' dd 'de' MMMM 'às' HH:mm", { locale: ptBR }),
+        action: {
+          label: "Visualizar",
+          onClick: () => route.push("/bookings"),
+        },
+      })
     } catch (error) {
       console.log({error})
     }
 
     setSubmitIsLoading(false)
+    
+    setSheetIsOpen(false)
   }
 
 
@@ -87,7 +104,7 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
               <p className="text-primary font-bold">
                 {Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(Number(service.price.toString()))}
               </p>
-              <Sheet>
+              <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
                 <SheetTrigger asChild> 
                   <Button variant="outline" onClick={() => handleBookingClick()}>
                     Reservar
