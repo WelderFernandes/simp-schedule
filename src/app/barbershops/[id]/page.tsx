@@ -4,7 +4,7 @@ import { db } from "../../../../lib/prisma"
 import { BarbershopInfo } from "./component/barbershop-info"
 import { ServiceItem } from "./component/service-item"
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from "@/lib/auth"
 
 
 interface BarbershopDatilsPageProps {
@@ -33,7 +33,7 @@ async function BarbershopDatailsPage({params}: BarbershopDatilsPageProps) {
     <div>
       <BarbershopInfo Barbershop={barbershop} />
       {barbershop.services.map((service) => (
-        <ServiceItem key={service.id} service={service} isAuthenticated={!!session}/>
+        <ServiceItem key={service.id} service={service} barbershop={barbershop} isAuthenticated={!!session}/>
       ))}
     </div>
   )

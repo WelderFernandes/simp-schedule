@@ -1,24 +1,70 @@
 "use client"
 import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card"
-import { Service } from "@prisma/client"
-import { signIn } from "next-auth/react";
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Barbershop, Service } from "@prisma/client"
+import { ptBR } from "date-fns/locale";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image"
+import { useMemo, useState } from "react";
+import { generateDayTimeList } from "../helpers/hours";
+import { format, setHours, setMinutes } from "date-fns";
+import { saveBooking } from "../actions/save-booking";
+import { Loader2 } from "lucide-react";
 
 interface ServiceItemProps {
+  barbershop: Barbershop;
   service: Service;
   isAuthenticated: boolean;
 }
 
-export function ServiceItem({service, isAuthenticated}: ServiceItemProps) {
-
+export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemProps) {
+  const {data} = useSession()
+  const [date, setDate] = useState<Date | undefined>(undefined)
+  const [hour, setHour] = useState<string | undefined>()
+  const [submitIsLoading, setSubmitIsLoading] = useState(false)
   
+  function handleCalendarChange(date: Date | undefined) {
+    setDate(date);
+    setHour(undefined);
+  }
 
   function handleBookingClick() {
     if (!isAuthenticated) {
       return signIn('google')
     }
   }
+
+  async function handleBookingConfirmClick() {
+    setSubmitIsLoading(true)
+    try {
+      if (!date || !hour || !data?.user) {
+        return
+      }
+
+      const dateHour = Number(hour.split(":")[0])
+      const dateMinutes = Number(hour.split(":")[1])
+
+      const newDate = setMinutes(setHours(date, dateHour), dateMinutes)
+
+     await saveBooking({
+        serviceId: service.id,
+        barbershopId: barbershop.id,
+        userId: (data.user as any).id,
+        date: newDate
+      })
+    } catch (error) {
+      console.log({error})
+    }
+
+    setSubmitIsLoading(false)
+  }
+
+
+ const timeList = useMemo(() => {
+  return generateDayTimeList(date || new Date())
+ }, [date])
 
   return (
     <Card className="flex gap-1 my-2 mx-5">
@@ -41,7 +87,110 @@ export function ServiceItem({service, isAuthenticated}: ServiceItemProps) {
               <p className="text-primary font-bold">
                 {Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(Number(service.price.toString()))}
               </p>
-              <Button variant="outline" onClick={() => handleBookingClick()}>Reservar</Button>
+              <Sheet>
+                <SheetTrigger asChild> 
+                  <Button variant="outline" onClick={() => handleBookingClick()}>
+                    Reservar
+                  </Button>
+               </SheetTrigger>
+
+               <SheetContent className="p-0">
+                <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
+                  <SheetTitle>
+                    Fazer Reserva
+                  </SheetTitle>
+                </SheetHeader>
+                <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={handleCalendarChange}
+                    className="my-6"
+                    locale={ptBR}
+                    fromDate={new Date()}
+                    styles={{
+                      head_cell: {
+                        border: 'none',
+                        width: '100%',
+                        textTransform: 'capitalize'
+                      },
+                      cell: {
+                        border: 'none',
+                        width: '100%'
+                      },
+                      button: {
+                        width: '100%'
+                      },
+                      nav_button_next: {
+                        width: '2rem'
+                      },
+                      nav_button_previous: {
+                        width: '2rem'
+                      },
+                      caption: {
+                        textTransform: 'capitalize'
+                      }
+                    }}
+                  />
+                {/* Mostra lista de horários apenas se alguma data estiver selecionada */}
+                  {
+                    date && (
+                      <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden text-left px-5 py-6 border-t border-solid border-secondary">
+                        {timeList.map((time) => (
+                          <Button
+                            key={time}
+                            variant={time === hour ? "default" : "outline"}
+                            className={
+                              `${time === hour && "border-primary border"}
+                              rounded-full`} 
+                            onClick={() => setHour(time)}
+                          >
+                            {time}
+                          </Button>
+                        ))}
+                      </div>
+                    )
+                  }
+                  <div className="py-6 px-5 border-t border-solid border-secondary">
+                    <Card>
+                      <CardContent className="p-3 flex flex-col gap-3">
+                        <div className="flex justify-between items-center">
+                          <h2 className="font-bold">{service.name}</h2>
+                          <h3 className="font-bold text-sm">{Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(Number(service.price.toString()))}</h3>
+                        </div>
+                        {date && (
+                          <div className="flex justify-between items-center">
+                            <h3 className="text-gray-400">Data</h3>
+                            <h4 className="text-sm">{format(date, "dd 'de' MMMM", {locale: ptBR})}</h4>
+                          </div>
+                        )}
+                         {hour && (
+                          <div className="flex justify-between items-center">
+                            <h3 className="text-gray-400">Horário</h3>
+                            <h4 className="text-sm">{hour}</h4>
+                          </div>
+                        )}
+                        <div className="flex justify-between items-center">
+                            <h3 className="text-gray-400">Barbearia</h3>
+                            <h4 className="text-sm">{barbershop.name}</h4>
+                        </div>
+
+                      </CardContent>
+                    </Card>
+                  </div>
+                  <SheetFooter className="flex justify-center px-5">
+                    <Button
+                      variant="default"
+                      disabled={!date || !hour || submitIsLoading}
+                      onClick={() => handleBookingConfirmClick()}
+                    >
+                      {submitIsLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      Confirmar reserva
+                    </Button>
+                  </SheetFooter>
+               </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
