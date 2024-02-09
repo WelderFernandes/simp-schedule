@@ -45,7 +45,7 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
     }
 
     refreshAvaliableHours()
-  }, [date])
+  }, [date, barbershop.id])
   
   function handleCalendarChange(date: Date | undefined) {
     setDate(date);
@@ -190,7 +190,7 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
                   {
                     date && (
                       <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden text-left px-5 py-6 border-t border-solid border-secondary">
-                        {timeList.map((time) => (
+                        {timeList.length === 0 ? 'Nenhum horário disponível no dia selecionado' : timeList.map((time) => (
                           <Button
                             key={time}
                             variant={time === hour ? "default" : "outline"}
@@ -202,6 +202,19 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
                             {time}
                           </Button>
                         ))}
+                        
+                        {/* {timeList.map((time) => (
+                          <Button
+                            key={time}
+                            variant={time === hour ? "default" : "outline"}
+                            className={
+                              `${time === hour && "border-primary border"}
+                              rounded-full`} 
+                            onClick={() => setHour(time)}
+                          >
+                            {time}
+                          </Button>
+                        ))} */}
                       </div>
                     )
                   }
