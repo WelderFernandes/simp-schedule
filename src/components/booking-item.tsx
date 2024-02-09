@@ -17,7 +17,7 @@ interface BookingItemProps {
 
 export function BookingItem({ booking }: BookingItemProps) {
   return (
-    <Card>
+    <Card className="min-w-full">
       <CardContent className="p-5 flex py-0 px-0">
         <div className="flex flex-col gap-2 py-5 flex-[3] pl-5">
           <Badge variant={isPast(booking.date) ? "outline" : "secondary"} 
