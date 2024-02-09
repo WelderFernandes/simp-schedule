@@ -12,6 +12,7 @@ import { Button } from "./ui/button";
 import { cancelBooking } from "@/app/actions/cancel-booking";
 import { toast } from "sonner";
 import { useState } from "react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 
 
 interface BookingItemProps {
@@ -107,12 +108,13 @@ export function BookingItem({ booking }: BookingItemProps) {
             className={`w-fit my-3 ${isPast(booking.date) ? "border-secondary-400 text-gray-400" : "text-green-400"}`}>
               {isPast(booking.date) ? "Finalizado" : "Agendado"}
           </Badge>
-
           <Card>
             <CardContent className="p-3 flex flex-col gap-3">
               <div className="flex justify-between items-center">
                 <h2 className="font-bold">{booking.service.name}</h2>
-                <h3 className="font-bold text-sm">{Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(Number(booking.service.price.toString()))}</h3>
+                <h3 className="font-bold text-sm">
+                  {Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(Number(booking.service.price.toString()))}
+                </h3>
               </div>
 
                 <div className="flex justify-between items-center">
@@ -131,27 +133,54 @@ export function BookingItem({ booking }: BookingItemProps) {
 
             </CardContent>
           </Card>
-
           <SheetFooter className="flex-row w-full items-center justify-between gap-3 mt-6">
             <SheetClose asChild>
               <Button
                 variant="secondary"
                 className="w-full"
               >
-                Voltar
+                Cancelar
               </Button>
             </SheetClose>
-            <Button
-              onClick={handleCancelBooking}
-              disabled={isPast(booking.date) || isDeleteLoading}
-              variant="destructive"
-              className="w-full"
-            >
-              {isDeleteLoading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : "Cancelar reserva"}
-              
-            </Button>
+
+            <AlertDialog >
+                <AlertDialogTrigger asChild>
+                <Button
+                  // 
+                  disabled={isPast(booking.date) || isDeleteLoading}
+                  variant="destructive"
+                  className="w-full"
+                >
+                  {isDeleteLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : "Cancelar reserva"}
+
+                </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="w-[90%]">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Cancelar reserva</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Tem certeza que deseja <b>cancelar</b> esta reserva?
+                      <p>Uma vez cancelada, esta reserva não pode ser refeita.</p>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="flex-row gap-4">
+                    <AlertDialogCancel className="w-full m-0 bg-secondary hover:bg-secondary/60">
+                      Voltar
+                    </AlertDialogCancel>
+                    <AlertDialogAction 
+                      onClick={handleCancelBooking}
+                      disabled={isDeleteLoading} 
+                      className="w-full p-0 bg-destructive hover:bg-destructive/60">
+                    {isDeleteLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : "Confirmar"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
           </SheetFooter>
         </div>
       </SheetContent>

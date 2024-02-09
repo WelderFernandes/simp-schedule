@@ -57,17 +57,16 @@ export default async function Home() {
       <div className="px-5 pt-6 flex gap-1 flex-col">
         <Search />
       </div>
-      <div className="pt-6">
-        <h2 className="text-xs px-5 uppercase text-gray-400 font-bold mb-3">Agendamentos</h2>
-
-        <div className="flex px-5 gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:pt-2">
-          {bookings?.map((booking) => (
-            <BookingItem key={booking.id} booking={booking} />
-            ))}
+      {bookings.length > 0 && (
+          <div className="pt-6">
+          <h2 className="text-xs px-5 uppercase text-gray-400 font-bold mb-3">Agendamentos</h2>
+          <div className="flex px-5 gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:pt-2">
+            {bookings?.map((booking) => (
+              <BookingItem key={booking.id} booking={booking} />
+              ))}
+          </div>
         </div>
-        
-      </div>
-
+      )}
       <div className="mt-6 ">
         <h2 className="px-5 text-xs uppercase text-gray-400 font-bold mb-3">Recomendados</h2>
         
