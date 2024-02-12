@@ -10,23 +10,25 @@ import Link from "next/link"
 function Header() {
   
   return (
-    <Card>
-      <CardContent className="flex justify-between p-5 items-center">
-        <Link href="/">
-          <Image src="/Logo.png" alt="SIMP Logo"height={22} width={120}  />
-        </Link>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="h-8 w-8">
-              <MenuIcon size={16} />
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="p-0 ">
-            <SideMenu />
-          </SheetContent>
-        </Sheet>
-      </CardContent>
-    </Card>
+      <header>
+      <Card className="rounded-none">
+            <CardContent className="flex justify-between p-5 items-center">
+              <Link href="/">
+                <Image src="/Logo.png" alt="SIMP Logo"height={22} width={120}  />
+              </Link>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" className="h-8 w-8">
+                    <MenuIcon size={16} />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="p-0 ">
+                  <SideMenu />
+                </SheetContent>
+              </Sheet>
+            </CardContent>
+          </Card>
+      </header>
   )
 }
 
