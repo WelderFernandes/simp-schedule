@@ -16,18 +16,30 @@ export function SideMenu() {
               </SheetTitle>
             </SheetHeader>
             {data?.user ? (
-             <div className="flex justify-between px-5 py-6 items-center">
-               <div className="flex item-center gap-3">
-                <Avatar>
-                  <AvatarImage src={data.user?.image as string} />
-                  <AvatarFallback>{data.user?.name?.charAt(0) as string}</AvatarFallback>
-                </Avatar>
-                <h2 className="font-bold">{data.user?.name}</h2>
-              </div>
-              <Button variant="secondary" size={"icon"} className="h-8 w-8" onClick={() =>  signOut() }>
-                <LogOutIcon size={20} />
-              </Button>
-             </div>
+            //  <div className="flex justify-between px-5 py-6">
+            //    <div className="flex gap-2 ">
+            //     <Avatar>
+            //       <AvatarImage src={data.user?.image as string} />
+            //       <AvatarFallback>{data.user?.name?.charAt(0) as string}</AvatarFallback>
+            //     </Avatar>
+            //     <h2 className="font-bold">{data.user?.name}</h2>
+            //   </div>
+            //   <Button variant="secondary" size={"icon"} className="h-8 w-8" onClick={() =>  signOut() }>
+            //     <LogOutIcon size={20} />
+            //   </Button>
+            //  </div>
+          <div className="flex px-5 gap-3 py-6 items-center justify-between ">
+            <div className="flex item-center gap-2 items-center ">
+              <Avatar>
+                <AvatarImage src={data.user?.image as string} />
+                <AvatarFallback>{data.user?.name?.charAt(0) as string}</AvatarFallback>
+              </Avatar>
+              <h2 className="font-bold">{data.user?.name}</h2>
+            </div>
+            <Button variant="secondary" size={"icon"} className="h-8 w-8" onClick={() =>  signOut() }>
+              <LogOutIcon size={20} />
+            </Button>
+          </div>
             ): (
               <div className="flex flex-col px-5 gap-3 py-6 items-left">
                 <div className="flex item-center gap-2 items-center ">
