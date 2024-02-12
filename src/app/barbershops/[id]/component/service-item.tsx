@@ -149,7 +149,7 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
                   </Button>
                </SheetTrigger>
 
-               <SheetContent className="p-0">
+               <SheetContent className="p-0 overflow-y-scroll [&::-webkit-scrollbar]:hidden">
                 <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
                   <SheetTitle>
                     Fazer Reserva
