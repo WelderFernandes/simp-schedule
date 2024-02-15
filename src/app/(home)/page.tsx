@@ -8,6 +8,14 @@ import { db } from "../../../lib/prisma";
 import { Footer } from "@/components/footer";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+
 
 export default async function Home() {
 
@@ -63,26 +71,46 @@ export default async function Home() {
       )}
       <div className="mt-6 ">
         <h2 className="px-5 text-xs uppercase text-gray-400 font-bold mb-3">Recomendados</h2>
-        
-        <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:pt-2">
+      <Carousel className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:pt-2">
+        <CarouselContent >
+        {barbershop.map((barbershop) => (
+            <CarouselItem key={barbershop.id} className="min-w-[12rem] max-w-[12rem]">
+              <BarbershopItem barbershop={barbershop} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+        {/* <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:pt-2">
           {barbershop.map((barbershop) => (
             <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
               <BarbershopItem barbershop={barbershop} />
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
+
+     
 
       <div className="mt-6 mb-[4.5rem]">
         <h2 className="px-5 text-xs uppercase text-gray-400 font-bold mb-3">Populares</h2>
+
+        <Carousel className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:pt-2">
+        <CarouselContent >
+        {recommendedBarbershop.map((barbershop) => (
+            <CarouselItem key={barbershop.id} className="min-w-[12rem] max-w-[12rem]">
+              <BarbershopItem barbershop={barbershop} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
         
-        <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:pt-2">
+        {/* <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:pt-2">
           {recommendedBarbershop.map((barbershop) => (
             <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
               <BarbershopItem barbershop={barbershop} />
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
 
     </main>

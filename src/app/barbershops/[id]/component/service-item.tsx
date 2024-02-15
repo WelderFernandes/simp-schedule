@@ -15,6 +15,14 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner"
 import { useRouter } from "next/navigation";
 import { getDayBooking } from "../actions/get-day-booking";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+
 
 
 interface ServiceItemProps {
@@ -53,9 +61,9 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
   }
 
   function handleBookingClick() {
-    if (!isAuthenticated) {
-      return signIn('google')
-    }
+    // if (!isAuthenticated) {
+    //   return signIn('google')
+    // }
   }
 
   async function handleBookingConfirmClick() {
@@ -189,19 +197,22 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
                 {/* Mostra lista de horários apenas se alguma data estiver selecionada */}
                   {
                     date && (
-                      <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden text-left px-5 py-6 border-t border-solid border-secondary">
-                        {timeList.length === 0 ? 'Nenhum horário disponível no dia selecionado' : timeList.map((time) => (
-                          <Button
-                            key={time}
-                            variant={time === hour ? "default" : "outline"}
-                            className={
-                              `${time === hour && "border-primary border"}
-                              rounded-full`} 
-                            onClick={() => setHour(time)}
-                          >
-                            {time}
-                          </Button>
-                        ))}
+                      <Carousel className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden text-left px-5 py-6 border-t border-solid border-secondary">
+                        <CarouselContent className="flex gap-2 pl-4 mr-8">
+                          {timeList.length === 0 ? 'Nenhum horário disponível no dia selecionado' : timeList.map((time) => (
+                              <Button key={time}
+                                variant={time === hour ? "default" : "outline"}
+                                className={
+                                  `${time === hour && "border-primary border"}
+                                  rounded-full`} 
+                                  onClick={() => setHour(time)}
+                                  >
+                              <CarouselItem className="p-0" >
+                                  {time}
+                              </CarouselItem>
+                              </Button>
+                          ))}
+                        </CarouselContent>
                         
                         {/* {timeList.map((time) => (
                           <Button
@@ -215,7 +226,7 @@ export function ServiceItem({service, isAuthenticated, barbershop}: ServiceItemP
                             {time}
                           </Button>
                         ))} */}
-                      </div>
+                      </Carousel>
                     )
                   }
                   <div className="py-6 px-5 border-t border-solid border-secondary">
