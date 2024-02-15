@@ -1,9 +1,9 @@
+import BookingItem from "@/app/_components/booking-item";
+import Header from "@/app/_components/header";
+import { authOptions } from "@/app/_lib/auth";
+import { db } from "@/app/_lib/prisma";
 import { getServerSession } from "next-auth";
-import Header from "../_components/header";
 import { redirect } from "next/navigation";
-import { db } from "../_lib/prisma";
-import BookingItem from "../_components/booking-item";
-import { authOptions } from "../_lib/auth";
 
 const BookingsPage = async () => {
   const session = await getServerSession(authOptions);

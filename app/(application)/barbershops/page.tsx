@@ -1,8 +1,8 @@
+import BarbershopItem from "@/app/_components/barbershop-item";
+import Header from "@/app/_components/header";
+import Search from "@/app/_components/search";
+import { db } from "@/app/_lib/prisma";
 import { redirect } from "next/navigation";
-import BarbershopItem from "../(home)/_components/barbershop-item";
-import Header from "../_components/header";
-import { db } from "../_lib/prisma";
-import Search from "../(home)/_components/search";
 
 interface BarbershopsPageProps {
   searchParams: {
