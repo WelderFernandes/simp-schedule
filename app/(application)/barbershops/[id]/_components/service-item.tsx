@@ -17,6 +17,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { getDayBookings } from "../_actions/get-day-bookings";
 import BookingInfo from "@/app/_components/booking-info";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  } from "@/app/_components/ui/carousel";
 
 interface ServiceItemProps {
   barbershop: Barbershop;
@@ -198,18 +203,20 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
 
                   {/* Mostrar lista de horários apenas se alguma data estiver selecionada */}
                   {date && (
-                    <div className="flex gap-3 overflow-x-auto py-6 px-5 border-t border-solid border-secondary [&::-webkit-scrollbar]:hidden">
-                      {timeList.map((time) => (
-                        <Button
+                    <Carousel className="flex gap-3 overflow-x-auto py-6 px-5 border-t border-solid border-secondary ">
+                      <CarouselContent className="flex gap-2 mx-auto">
+                        {timeList.map((time) => (
+                          <Button
                           onClick={() => handleHourClick(time)}
                           variant={hour === time ? "default" : "outline"}
                           className="rounded-full"
                           key={time}
-                        >
-                          {time}
-                        </Button>
-                      ))}
-                    </div>
+                          >
+                            {time}
+                          </Button>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
                   )}
 
                   <div className="py-6 px-5 border-t border-solid border-secondary">

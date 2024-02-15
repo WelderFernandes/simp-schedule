@@ -7,7 +7,11 @@ import { db } from "../_lib/prisma";
 import BarbershopItem from "../_components/barbershop-item";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
-
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  } from "@/app/_components/ui/carousel";
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
@@ -68,26 +72,29 @@ export default async function Home() {
 
       <div className="mt-6">
         <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">Recomendados</h2>
-
-        <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop) => (
-            <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
-              <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-            </div>
-          ))}
-        </div>
+        <Carousel  spellCheck="true">
+          <CarouselContent className="flex mx-auto">
+            {barbershops.map((barbershop) => (
+              <CarouselItem key={barbershop.id} className="min-w-[11rem] max-w-[11rem]">
+                <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
       </div>
 
       <div className="mt-6 mb-[4.5rem]">
         <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">Populares</h2>
 
-        <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {recommendedBarbershops.map((barbershop) => (
-            <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
-              <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-            </div>
-          ))}
-        </div>
+        <Carousel>
+          <CarouselContent className="mx-auto">
+            {recommendedBarbershops.map((barbershop) => (
+              <CarouselItem key={barbershop.id} className="min-w-[11rem] max-w-[11rem]">
+                <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
       </div>
     </div>
   );
