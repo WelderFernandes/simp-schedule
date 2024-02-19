@@ -1,13 +1,16 @@
-import BarbershopItem from "@/app/_components/barbershop-item";
-import BookingItem from "@/app/_components/booking-item";
 import Header from "@/app/_components/header";
-import Search from "@/app/_components/search";
 import { authOptions } from "@/app/_lib/auth";
 import { db } from "@/app/_lib/prisma";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/app/_components/ui/avatar";
+import { Button } from "@/app/_components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter } from "@/app/_components/ui/card";
+import { Carousel, CarouselContent } from "@/app/_components/ui/carousel";
+import { Separator } from "@/app/_components/ui/separator";
+import { Calendar, PlusIcon, Settings2Icon } from "lucide-react";
 import { getServerSession } from "next-auth";
+import { CardScheduleWeek } from "./_component/card-schedule-week";
+import HeaderPainel from "./_component/header-painel";
 
 
 export default async function DashboardPage() {
@@ -40,57 +43,170 @@ export default async function DashboardPage() {
     <div>
       <Header />
 
-      <div className="px-5 pt-5">
-        <h2 className="text-xl font-bold">
-          {session?.user ? `Olá, ${session.user.name?.split(" ")[0]}!` : "Olá! Vamos agendar um corte hoje?"}
-        </h2>
-        <p className="capitalize text-sm">
-          {format(new Date(), "EEEE',' dd 'de' MMMM", {
-            locale: ptBR,
-          })}
-        </p>
+      <div className="pt-5">
+        <HeaderPainel />
       </div>
 
-      <div className="px-5 mt-6">
-        <Search />
-      </div>
-
-      <div className="mt-6">
-        {confirmedBookings.length > 0 && (
-          <>
-            <h2 className="pl-5 text-xs mb-3 uppercase text-gray-400 font-bold">Agendamentos</h2>
-            <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-              {confirmedBookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className="mt-6">
-        <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">Recomendados</h2>
-
-        <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop) => (
-            <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
-              <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-            </div>
-          ))}
+      <div className="flex px-5 mt-6 align-middle justify-between items-center">
+        <div>
+          <h1 className="text-gray-300 font-bold text-2xl">Agendamentos da semana</h1>
+          <p className="text-gray-400 text-sm">18 agendamentos</p>
         </div>
+        <div className="flex items-center gap-3">
+
+            <Button variant="outline" size="icon" className="border-none">
+                <Settings2Icon size={18} />
+            </Button>
+            <Separator orientation="vertical" className="h-6" />
+            <Button variant="outline" size="icon" className="border-none">
+                <PlusIcon size={18} />
+            </Button>
+          </div>
       </div>
-
-      <div className="mt-6 mb-[4.5rem]">
-        <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">Populares</h2>
-
-        <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {recommendedBarbershops.map((barbershop) => (
-            <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
-              <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+      <div className="px-5 py-6">
+        <Carousel>
+          <CarouselContent className="gap-4 mx-auto">
+            <div className="flex-1">
+              <CardScheduleWeek />
             </div>
-          ))}
-        </div>
+            <div className="flex-1">
+              <CardScheduleWeek />
+            </div>
+            <div className="flex-1">
+              <CardScheduleWeek />
+            </div>
+            <div className="flex-1">
+              <CardScheduleWeek />
+            </div>
+            <div className="flex-1">
+              <CardScheduleWeek />
+            </div>
+            <div className="flex-1">
+              <CardScheduleWeek />
+            </div>
+            <div className="flex-1">
+              <CardScheduleWeek />
+            </div>
+            <div className="flex-1">
+              <CardScheduleWeek />
+            </div>
+           
+          </CarouselContent>
+        </Carousel>
       </div>
-    </div>
+      <div className="flex px-5 mt-6 align-middle justify-between items-center">
+        <div>
+          <h1 className="text-gray-300 font-bold text-2xl">Agendamentos de hoje</h1>
+          <p className="text-gray-400 text-sm">15 agendamentos</p>
+        </div>
+        <div className="flex items-center gap-3">
+
+            <Button variant="outline" size="icon" className="border-none">
+                <Settings2Icon size={18} />
+            </Button>
+            <Separator orientation="vertical" className="h-6" />
+            <Button variant="outline" size="icon" className="border-none">
+                <PlusIcon size={18} />
+            </Button>
+          </div>
+      </div>
+      <div className="px-5 py-6 flex gap-2 flex-col">
+        <Card>
+          <CardContent className="flex justify-between gap-5 items-center pt-6 align-middle">
+            <div>
+              <h1 className="text-gray-300 font-bold text-xl text-wrap">Barba</h1>
+              <CardDescription className="text-gray-400">Welder n. Fernandes</CardDescription>
+            </div>
+            <div className="flex flex-col text-gray-400 item-right">
+              <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-secondary">
+                <AvatarImage src="https://github.com/welderfernandes.png" />
+                <AvatarFallback>WF</AvatarFallback>
+              </Avatar>
+            </div>
+          </CardContent>
+           <Separator orientation="horizontal" className="my-2"/>
+          <CardFooter className="flex gap-2 text-gray-400">
+          <Calendar size={16} />
+          <p className="text-sm font-medium">Mon, 12 July 2022</p>
+        </CardFooter>
+        </Card>
+        <Card>
+          <CardContent className="flex justify-between gap-5 items-center pt-6 align-middle">
+            <div>
+              <h1 className="text-gray-300 font-bold text-xl text-wrap">Barba</h1>
+              <CardDescription className="text-gray-400">Welder n. Fernandes</CardDescription>
+            </div>
+            <div className="flex flex-col text-gray-400 item-right">
+              <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-secondary">
+                <AvatarImage src="https://github.com/welderfernandes.png" />
+                <AvatarFallback>WF</AvatarFallback>
+              </Avatar>
+            </div>
+          </CardContent>
+           <Separator orientation="horizontal" className="my-2"/>
+          <CardFooter className="flex gap-2 text-gray-400">
+          <Calendar size={16} />
+          <p className="text-sm font-medium">Mon, 12 July 2022</p>
+        </CardFooter>
+        </Card>
+        <Card>
+          <CardContent className="flex justify-between gap-5 items-center pt-6 align-middle">
+            <div>
+              <h1 className="text-gray-300 font-bold text-xl text-wrap">Barba</h1>
+              <CardDescription className="text-gray-400">Welder n. Fernandes</CardDescription>
+            </div>
+            <div className="flex flex-col text-gray-400 item-right">
+              <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-secondary">
+                <AvatarImage src="https://github.com/welderfernandes.png" />
+                <AvatarFallback>WF</AvatarFallback>
+              </Avatar>
+            </div>
+          </CardContent>
+           <Separator orientation="horizontal" className="my-2"/>
+          <CardFooter className="flex gap-2 text-gray-400">
+          <Calendar size={16} />
+          <p className="text-sm font-medium">Mon, 12 July 2022</p>
+        </CardFooter>
+        </Card>
+        <Card>
+          <CardContent className="flex justify-between gap-5 items-center pt-6 align-middle">
+            <div>
+              <h1 className="text-gray-300 font-bold text-xl text-wrap">Barba</h1>
+              <CardDescription className="text-gray-400">Welder n. Fernandes</CardDescription>
+            </div>
+            <div className="flex flex-col text-gray-400 item-right">
+              <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-secondary">
+                <AvatarImage src="https://github.com/welderfernandes.png" />
+                <AvatarFallback>WF</AvatarFallback>
+              </Avatar>
+            </div>
+          </CardContent>
+           <Separator orientation="horizontal" className="my-2"/>
+          <CardFooter className="flex gap-2 text-gray-400">
+          <Calendar size={16} />
+          <p className="text-sm font-medium">Mon, 12 July 2022</p>
+        </CardFooter>
+        </Card>
+        <Card>
+          <CardContent className="flex justify-between gap-5 items-center pt-6 align-middle">
+            <div>
+              <h1 className="text-gray-300 font-bold text-xl text-wrap">Barba</h1>
+              <CardDescription className="text-gray-400">Welder n. Fernandes</CardDescription>
+            </div>
+            <div className="flex flex-col text-gray-400 item-right">
+              <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-secondary">
+                <AvatarImage src="https://github.com/welderfernandes.png" />
+                <AvatarFallback>WF</AvatarFallback>
+              </Avatar>
+            </div>
+          </CardContent>
+           <Separator orientation="horizontal" className="my-2"/>
+          <CardFooter className="flex gap-2 text-gray-400">
+          <Calendar size={16} />
+          <p className="text-sm font-medium">Mon, 12 July 2022</p>
+        </CardFooter>
+        </Card>
+      </div>
+     </div>
   );
 }
