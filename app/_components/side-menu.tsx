@@ -1,11 +1,11 @@
 "use client";
 
+import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { SheetHeader, SheetTitle } from "./ui/sheet";
+import Link from "next/link";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon } from "lucide-react";
-import Link from "next/link";
+import { SheetHeader, SheetTitle } from "./ui/sheet";
 
 const SideMenu = () => {
   const { data } = useSession();

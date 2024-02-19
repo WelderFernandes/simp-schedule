@@ -16,7 +16,7 @@ export function CardScheduleWeek() {
         </CardHeader>
         <CardContent>
           <h1 className="text-gray-300 font-bold text-xl text-wrap w-24">Welder N. Fernandes</h1>
-          <div className="py-5 flex -space-x-2 overflow-hidden mx-2">
+          <div className="py-5 flex -space-x-2 overflow-hidden">
             <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-primary">
               <AvatarImage src="https://github.com/welderfernandes.png" />
               <AvatarFallback>WF</AvatarFallback>
