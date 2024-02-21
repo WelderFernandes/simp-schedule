@@ -1,12 +1,16 @@
-"use client";
+'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/app/_components/ui/avatar";
-import { Button } from "@/app/_components/ui/button";
-import { Bell, Search } from "lucide-react";
-import { useSession } from "next-auth/react";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/app/_components/ui/avatar'
+import { Button } from '@/app/_components/ui/button'
+import { Bell, Search } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 
 const HeaderPainel = () => {
-  const { data } = useSession();
+  const { data } = useSession()
 
   return (
     <>
@@ -14,7 +18,7 @@ const HeaderPainel = () => {
         <div className="flex justify-between px-5 py-6 items-center">
           <div className="flex items-center gap-3">
             <Avatar>
-              <AvatarImage src={data.user?.image ?? ""} />
+              <AvatarImage src={data.user?.image ?? ''} />
               <AvatarFallback>WF</AvatarFallback>
             </Avatar>
             <div>
@@ -23,19 +27,18 @@ const HeaderPainel = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-
             <Button variant="secondary" size="icon" className="rounded-full">
-                <Search size={18} />
+              <Search size={18} />
             </Button>
 
             <Button variant="secondary" size="icon" className="rounded-full">
-                <Bell size={18} />
+              <Bell size={18} />
             </Button>
           </div>
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default HeaderPainel;
+export default HeaderPainel
