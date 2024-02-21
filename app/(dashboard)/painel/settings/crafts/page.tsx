@@ -1,10 +1,12 @@
 import { Button } from '@/app/_components/ui/button'
 import { Card, CardContent } from '@/app/_components/ui/card'
+import { Drawer, DrawerTrigger } from '@/app/_components/ui/drawer'
 import { Separator } from '@/app/_components/ui/separator'
 
 import { db } from '@/app/_lib/prisma'
 import { ArrowLeft, Edit2Icon, PlusIcon } from 'lucide-react'
 import Image from 'next/image'
+import { ServiceDrawn } from './_component/service-drawn'
 
 export default async function CraftsPage() {
   const [services] = await Promise.all([db.service.findMany()])
@@ -21,10 +23,15 @@ export default async function CraftsPage() {
       <div className="py-4 px-6">
         <div className="flex justify-between">
           <h1 className="text-gray-300 font-bold text-2xl">Servições</h1>
-          <Button variant="outline" className="gap-3 border-primary">
-            <PlusIcon size={18} />
-            Adicionar serviço
-          </Button>
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button variant="outline" className="gap-3 border-primary">
+                <PlusIcon size={18} />
+                Adicionar serviço
+              </Button>
+            </DrawerTrigger>
+            <ServiceDrawn />
+          </Drawer>
         </div>
         <Separator className="my-6" />
         <div className="w-full h-full flex flex-col gap-3">
