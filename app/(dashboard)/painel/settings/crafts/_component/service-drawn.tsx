@@ -51,7 +51,7 @@ export function ServiceDrawn() {
             Aqui voce pode cadastrar um novo Serviço
           </DrawerDescription>
         </DrawerHeader>
-        <ScrollArea className="h-full w-full rounded-md border p-4">
+        <ScrollArea className="h-[80vh] w-full rounded-md border p-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
