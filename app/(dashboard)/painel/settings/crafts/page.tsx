@@ -23,7 +23,7 @@ export default async function CraftsPage() {
       <div className="py-4 px-6">
         <div className="flex justify-between">
           <h1 className="text-gray-300 font-bold text-2xl">Servições</h1>
-          <Drawer>
+          <Drawer dismissible={false}>
             <DrawerTrigger asChild>
               <Button variant="outline" className="gap-3 border-primary">
                 <PlusIcon size={18} />
