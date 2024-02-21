@@ -1,13 +1,13 @@
-import { Barbershop, Booking, Prisma, Service } from "@prisma/client";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { Card, CardContent } from "./ui/card";
+import { Barbershop, Booking, Service } from '@prisma/client'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { Card, CardContent } from './ui/card'
 
 interface BookingInfoProps {
-  booking: Partial<Pick<Booking, "date">> & {
-    service: Pick<Service, "name" | "price">;
-    barbershop: Pick<Barbershop, "name">;
-  };
+  booking: Partial<Pick<Booking, 'date'>> & {
+    service: Pick<Service, 'name' | 'price'>
+    barbershop: Pick<Barbershop, 'name'>
+  }
 }
 
 const BookingInfo = ({ booking }: BookingInfoProps) => {
@@ -17,10 +17,10 @@ const BookingInfo = ({ booking }: BookingInfoProps) => {
         <div className="flex justify-between">
           <h2 className="font-bold">{booking.service.name}</h2>
           <h3 className="font-bold text-sm">
-            {" "}
-            {Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
+            {' '}
+            {Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
             }).format(Number(booking.service.price))}
           </h3>
         </div>
@@ -38,7 +38,7 @@ const BookingInfo = ({ booking }: BookingInfoProps) => {
 
             <div className="flex justify-between">
               <h3 className="text-gray-400 text-sm">Horário</h3>
-              <h4 className="text-sm">{format(booking.date, "hh:mm")}</h4>
+              <h4 className="text-sm">{format(booking.date, 'hh:mm')}</h4>
             </div>
           </>
         )}
@@ -49,7 +49,7 @@ const BookingInfo = ({ booking }: BookingInfoProps) => {
         </div>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default BookingInfo;
+export default BookingInfo
