@@ -6,8 +6,6 @@ import {
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
-  // DrawerOverlay,
-  // DrawerPortal,
   DrawerTitle,
 } from '@/app/_components/ui/drawer'
 import {
@@ -20,17 +18,10 @@ import {
   FormMessage,
 } from '@/app/_components/ui/form'
 import { Input } from '@/app/_components/ui/input'
-import { Textarea } from '@/app/_components/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { UploadCloud } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-// import ReactCrop, { type Crop } from 'react-image-crop'
-// import { useState } from 'react'
-// import { UploadIcon } from 'lucide-react'
-// import Image from 'next/image'
-
-// import { ScrollArea } from '@/app/_components/ui/scroll-area'
 
 export function ServiceDrawn() {
   // const [crop, setCrop] = useState<Crop>()
@@ -43,9 +34,10 @@ export function ServiceDrawn() {
   ]
   const formSchema = z.object({
     name: z.string().min(2).max(50),
-    price: z.string().min(2).max(50),
-    commission: z.string().min(2).max(50),
-    duration: z.string().min(2).max(50),
+    phone: z.string().min(2).max(50),
+    email: z.string().min(2).max(50),
+    password: z.string().min(2).max(50),
+    confirmPassword: z.string().min(2).max(50),
     image: z
       .any()
       .refine((files) => files?.length === 1, 'Image is required.')
@@ -63,10 +55,10 @@ export function ServiceDrawn() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      price: '',
-      commission: '',
-      duration: '',
-      image: '',
+      phone: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   })
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -77,9 +69,9 @@ export function ServiceDrawn() {
   return (
     <DrawerContent className="flex flex-1 max-h-[calc(100vh-60px)] ">
       <DrawerHeader>
-        <DrawerTitle>Cadastro de Serviço</DrawerTitle>
+        <DrawerTitle className="uppercase">Adicionar menbro</DrawerTitle>
         <DrawerDescription>
-          Aqui voce pode cadastrar um novo Serviço
+          Aqui voce pode cadastrar um novo menbro de equipe.
         </DrawerDescription>
       </DrawerHeader>
       <div className="px-5 py-6 overflow-y-auto">
@@ -126,7 +118,7 @@ export function ServiceDrawn() {
               name="name"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Nome do Serviço</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
                     <Input type="text" placeholder="Barba" {...field} />
                   </FormControl>
@@ -136,42 +128,14 @@ export function ServiceDrawn() {
             />
             <FormField
               control={form.control}
-              name="price"
+              name="phone"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Preço</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="00,00" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="commission"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Comissão %</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="00,00 %" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="duration"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Duração do Serviço</FormLabel>
+                  <FormLabel>Telefone</FormLabel>
                   <FormControl>
                     <Input
-                      type="time"
-                      min="00:10"
-                      max="3:00"
-                      placeholder="Duração"
+                      type="phone"
+                      placeholder="(00) 00000-0000"
                       {...field}
                     />
                   </FormControl>
@@ -181,14 +145,44 @@ export function ServiceDrawn() {
             />
             <FormField
               control={form.control}
-              name="duration"
+              name="email"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>E-mail</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="contato@contato.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Senha</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="Senha" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>Confirmar Senha</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Tell us a little bit about yourself"
-                      className="resize-none"
+                    <Input
+                      type="password"
+                      placeholder="Confirmar Senha"
                       {...field}
                     />
                   </FormControl>
