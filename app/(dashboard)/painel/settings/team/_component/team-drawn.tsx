@@ -32,10 +32,11 @@ export function ServiceDrawn() {
     'image/png',
     'image/webp',
   ]
+
   const formSchema = z.object({
     name: z.string().min(2).max(50),
-    phone: z.string().min(2).max(50),
-    email: z.string().min(2).max(50),
+    phone: z.string().min(10).max(14).optional(),
+    email: z.string().email({ message: 'Invalid email address' }),
     password: z.string().min(2).max(50),
     confirmPassword: z.string().min(2).max(50),
     image: z

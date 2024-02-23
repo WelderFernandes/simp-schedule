@@ -11,8 +11,6 @@ import { ServiceDrawn } from './_component/team-drawn'
 export default async function TeamPage() {
   const [services] = await Promise.all([db.service.findMany()])
 
-  console.log({ services })
-
   return (
     <div className="flex flex-col w-full ">
       <div className="py-4 px-5">
