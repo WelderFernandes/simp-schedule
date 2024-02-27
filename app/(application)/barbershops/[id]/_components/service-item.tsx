@@ -24,7 +24,6 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { getDayBookings } from '../_actions/get-day-bookings'
 import BookingInfo from '@/app/_components/booking-info'
-import { Carousel, CarouselContent } from '@/app/_components/ui/carousel'
 
 interface ServiceItemProps {
   barbershop: Barbershop
@@ -170,26 +169,41 @@ const ServiceItem = ({
                   </Button>
                 </SheetTrigger>
 
-                <SheetContent className="p-0">
+                <SheetContent className="p-0 h-full overflow-auto pb-12">
                   <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
                     <SheetTitle>Fazer Reserva</SheetTitle>
                   </SheetHeader>
-
-                  <div className="py-6">
+                  <div className="p-2 ">
                     <Calendar
                       mode="single"
                       selected={date}
                       onSelect={handleDateClick}
                       locale={ptBR}
                       fromDate={addDays(new Date(), 1)}
+                      ISOWeek={true}
+                      modifiersStyles={{
+                        outside: {
+                          display: 'none',
+                        },
+                      }}
                       styles={{
-                        head_cell: {
+                        row: {
                           width: '100%',
-                          textTransform: 'capitalize',
                         },
                         cell: {
                           width: '100%',
                         },
+                        table: {
+                          width: '100%',
+                        },
+                        head_row: {
+                          width: '100%',
+                        },
+                        head_cell: {
+                          textTransform: 'capitalize',
+                          display: 'content',
+                        },
+
                         button: {
                           width: '100%',
                         },
@@ -210,8 +224,8 @@ const ServiceItem = ({
 
                   {/* Mostrar lista de horários apenas se alguma data estiver selecionada */}
                   {date && (
-                    <Carousel className="flex gap-3 overflow-x-auto py-6 px-5 border-t border-solid border-secondary ">
-                      <CarouselContent className="flex gap-2 mx-auto">
+                    <div className="p-5 border-t border-solid border-secondary">
+                      <div className="flex gap-2 mx-auto flex-wrap">
                         {timeList.map((time) => (
                           <Button
                             onClick={() => handleHourClick(time)}
@@ -222,8 +236,8 @@ const ServiceItem = ({
                             {time}
                           </Button>
                         ))}
-                      </CarouselContent>
-                    </Carousel>
+                      </div>
+                    </div>
                   )}
 
                   <div className="py-6 px-5 border-t border-solid border-secondary">
