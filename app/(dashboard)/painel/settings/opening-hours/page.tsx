@@ -6,7 +6,7 @@ import { Separator } from '@/app/_components/ui/separator'
 import { db } from '@/app/_lib/prisma'
 import { ArrowLeft, Edit2Icon, PlusIcon } from 'lucide-react'
 import Image from 'next/image'
-import { ServiceDrawn } from './_component/team-drawn'
+// import { ServiceDrawn } from './_component/team-drawn'
 
 export default async function OpeningHours() {
   const [services] = await Promise.all([db.service.findMany()])
@@ -35,7 +35,7 @@ export default async function OpeningHours() {
                 Adicionar serviço
               </Button>
             </DrawerTrigger>
-            <ServiceDrawn />
+            {/* <ServiceDrawn /> */}
           </Drawer>
         </div>
         <Separator className="my-6" />

@@ -16,7 +16,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,7 +23,7 @@ import {
 } from '@/app/_components/ui/form'
 import { Input } from '@/app/_components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Edit, Edit2, Edit2Icon, Edit3, UploadCloud } from 'lucide-react'
+import { Edit3 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
