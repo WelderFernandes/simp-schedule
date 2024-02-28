@@ -1,4 +1,9 @@
 'use client'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/app/_components/ui/avatar'
 import { Button } from '@/app/_components/ui/button'
 import {
   DrawerClose,
@@ -19,7 +24,7 @@ import {
 } from '@/app/_components/ui/form'
 import { Input } from '@/app/_components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { UploadCloud } from 'lucide-react'
+import { Edit, Edit2, Edit2Icon, Edit3, UploadCloud } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -68,7 +73,9 @@ export function ServiceDrawn() {
   return (
     <DrawerContent className="flex flex-1 max-h-[calc(100vh-60px)] ">
       <DrawerHeader>
-        <DrawerTitle className="uppercase">Adicionar menbro</DrawerTitle>
+        <DrawerTitle className="uppercase text-zinc-300 font-bold ">
+          Adicionar menbro
+        </DrawerTitle>
         <DrawerDescription>
           Aqui voce pode cadastrar um novo menbro de equipe.
         </DrawerDescription>
@@ -80,16 +87,16 @@ export function ServiceDrawn() {
               control={form.control}
               name="image"
               render={({ field }) => (
-                <FormItem className="flex align-middle justify-center flex-1">
+                <FormItem className="flex align-middle justify-center flex-1 ">
                   <FormControl>
-                    <div className="flex flex-col gap-1 items-center">
-                      <div className="flex items-center justify-center max-w-36 max-h-46 align-middle text-center">
-                        <label
+                    <div className="flex flex-col gap-1 items-center ">
+                      <div className="flex items-center justify-center align-middle text-center ">
+                        {/* <label
                           htmlFor="dropzone-file"
-                          className="flex flex-col items-center justify-center w-full py-2 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                          className="flex flex-col items-center justify-center py-2 border-2  border-dashed rounded-lg cursor-pointer hover:bg-bray-800 bg-gray-700  border-gray-600 hover:border-gray-500 hover:bg-gray-600"
                         >
                           <div className="flex flex-col items-center justify-center ">
-                            <UploadCloud className="w-10 h-10 mb-3 text-gray-400" />
+                            <UploadCloud className=" mb-3 text-gray-400 " />
                             <p className="text-xs text-gray-500 dark:text-gray-400">
                               PNG, JPG, JPEG
                             </p>
@@ -103,9 +110,24 @@ export function ServiceDrawn() {
                             className="hidden"
                             {...field}
                           />
-                        </label>
+                        </label> */}
+                        <div className="relative inline-block">
+                          <Avatar className="w-24 h-24">
+                            <AvatarImage
+                              src="https://github.com/shadcn.png"
+                              alt="@shadcn"
+                            />
+                            <AvatarFallback>CN</AvatarFallback>
+                          </Avatar>
+                          <div
+                            {...field}
+                            className="absolute bottom-2 end-4 block p-1 rounded-full transform translate-y-1/2 translate-x-1/2 bg-white ring-2 ring-secondary hover:ring-primary"
+                          >
+                            <Edit3 className="w-4 h-4 text-gray-400" />
+                          </div>
+                        </div>
                       </div>
-                      <h3 className="font-bold">Foto do Serviço</h3>
+                      <h3 className="font-bold">Foto</h3>
                       <FormMessage />
                     </div>
                   </FormControl>
@@ -150,9 +172,9 @@ export function ServiceDrawn() {
                   <FormLabel>E-mail</FormLabel>
                   <FormControl>
                     <Input
-                      type="email"
                       placeholder="contato@contato.com"
                       {...field}
+                      aria-autocomplete="none"
                     />
                   </FormControl>
                   <FormMessage />
@@ -166,7 +188,11 @@ export function ServiceDrawn() {
                 <FormItem className="flex flex-col">
                   <FormLabel>Senha</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Senha" {...field} />
+                    <Input
+                      placeholder="Senha"
+                      {...field}
+                      autoComplete="false"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -179,15 +205,8 @@ export function ServiceDrawn() {
                 <FormItem>
                   <FormLabel>Confirmar Senha</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Confirmar Senha"
-                      {...field}
-                    />
+                    <Input placeholder="Confirmar Senha" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Dica: descreva como e o serviço.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
