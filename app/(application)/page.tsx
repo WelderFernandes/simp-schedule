@@ -12,6 +12,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/app/_components/ui/carousel'
+import { User } from '@prisma/client'
 export default async function Home() {
   const session = await getServerSession(authOptions)
 
@@ -26,7 +27,7 @@ export default async function Home() {
       session?.user
         ? db.booking.findMany({
             where: {
-              userId: (session.user as any).id,
+              userId: (session.user as User).id,
               date: {
                 gte: new Date(),
               },
@@ -66,19 +67,33 @@ export default async function Home() {
             <h2 className="pl-5 text-xs mb-3 uppercase text-gray-400 font-bold">
               Agendamentos
             </h2>
-            <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-              {confirmedBookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
-              ))}
-            </div>
+            <Carousel className="px-2 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              <CarouselContent className="flex mx-auto">
+                {confirmedBookings.map((booking) => (
+                  <CarouselItem
+                    key={booking.id}
+                    className="min-w-[36rem] max-w-[11rem]"
+                  >
+                    <BookingItem key={booking.id} booking={booking} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           </>
         )}
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-col">
         <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">
           Recomendados
         </h2>
+        {/* <div className="px-5 grid gap-4 grid-cols-3 grid-rows-3">
+          {barbershops.map((barbershop) => (
+            <div key={barbershop.id} className="min-w-[11rem] max-w-[11rem]">
+              <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+            </div>
+          ))}
+        </div> */}
         <Carousel spellCheck="true">
           <CarouselContent className="flex mx-auto">
             {barbershops.map((barbershop) => (
@@ -91,6 +106,9 @@ export default async function Home() {
             ))}
           </CarouselContent>
         </Carousel>
+        {/* <Button variant="secondary" className="mt-6 mx-auto">
+          Ver todos
+        </Button> */}
       </div>
 
       <div className="mt-6 mb-[4.5rem]">
