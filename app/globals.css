@@ -35,6 +35,10 @@
     --radius: 0.5rem;
   }
 }
+/* day-picker.css */
+/* Paint the today's date in red */
+
+
 
 @layer base {
   * {

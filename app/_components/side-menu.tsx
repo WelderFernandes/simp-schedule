@@ -5,6 +5,7 @@ import {
   HomeIcon,
   LogInIcon,
   LogOutIcon,
+  Settings,
   UserIcon,
 } from 'lucide-react'
 import { signIn, signOut, useSession } from 'next-auth/react'
@@ -73,6 +74,13 @@ const SideMenu = () => {
             </Link>
           </Button>
         )}
+
+        <Button variant="outline" className="justify-start" asChild>
+          <Link href="/painel/settings">
+            <Settings size={18} className="mr-2" />
+            Configurações
+          </Link>
+        </Button>
       </div>
     </>
   )

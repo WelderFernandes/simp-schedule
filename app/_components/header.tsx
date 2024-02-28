@@ -11,10 +11,13 @@ import Link from 'next/link'
 const Header = () => {
   return (
     <header>
-      <Card>
-        <CardContent className="p-5 justify-between items-center flex flex-row">
+      <Card className="rounded-none">
+        <CardContent className="p-5 justify-between items-center flex flex-row ">
           <Link href="/">
-            <Image src="/logo.png" alt="FSW Barber" height={18} width={120} />
+            <h4 className="text-xl font-bold text-primary uppercase animate-pulse">
+              SIMP
+            </h4>
+            <p className="text-gray-400 text-sm">Logo provisorio</p>
           </Link>
           <Sheet>
             <SheetTrigger asChild>
