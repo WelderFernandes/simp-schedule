@@ -19,7 +19,7 @@ import Image from 'next/image'
 import { Button } from './ui/button'
 import { cancelBooking } from '../_actions/cancel-booking'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Loader2, MessageCircle } from 'lucide-react'
 import {
   AlertDialog,
@@ -47,8 +47,24 @@ interface BookingItemProps {
 
 const BookingItem = ({ booking }: BookingItemProps) => {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const isBookingConfirmed = isFuture(booking.date)
+
+  const handleCopyToClipboard = () => {
+    // Verifica se o inputRef está definido
+    console.log({ inputRef })
+    if (inputRef.current) {
+      // Seleciona o texto no input
+      inputRef.current.select()
+      // Copia o texto para a área de transferência
+      document.execCommand('copy')
+      // Desseleciona o texto
+      window.getSelection()?.removeAllRanges()
+      // Opcional: Exibe uma mensagem ou lógica adicional
+      alert('Texto copiado para a área de transferência!')
+    }
+  }
 
   const handleCancelClick = async () => {
     setIsDeleteLoading(true)
@@ -81,7 +97,6 @@ const BookingItem = ({ booking }: BookingItemProps) => {
               <div className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
                   <AvatarImage src={booking.barbershop.imageUrl} />
-
                   <AvatarFallback>A</AvatarFallback>
                 </Avatar>
 
@@ -154,12 +169,17 @@ const BookingItem = ({ booking }: BookingItemProps) => {
               </h3>
               <div className="flex flex-col my-6 bg-gray-800 p-4 rounded-md  mx-auto">
                 <Input
+                  ref={inputRef}
                   className="flex-1 text-white bg-transparent border-none flex-wrap max-w-[300px] overflow-hidden text-ellipsis"
                   readOnly
                   value="0b83fa1b-35fd-4d12-a2ce-bef34acbe671 bef34acbe671 bef34acbe671"
                 />
               </div>
-              <Button className="mb-2 w-full" variant="outline">
+              <Button
+                className="mb-2 w-full"
+                variant="outline"
+                onClick={handleCopyToClipboard}
+              >
                 Copiar
               </Button>
               <h2 className="text-gray-400">
@@ -175,7 +195,6 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             href={`https://api.whatsapp.com/send?phone=123456789&text=Olá,%0A%${booking.id}`}
           >
             <Button
-              disabled={!isBookingConfirmed || isDeleteLoading}
               className="w-full bg-green-400/80 mt-6 flex gap-2 justify-center"
               variant="secondary"
             >
