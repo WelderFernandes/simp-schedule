@@ -1,21 +1,22 @@
-import BookingItem from "@/app/_components/booking-item";
-import Header from "@/app/_components/header";
-import { authOptions } from "@/app/_lib/auth";
-import { db } from "@/app/_lib/prisma";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import BookingItem from '@/app/_components/booking-item'
+import Header from '@/app/_components/header'
+import { authOptions } from '@/app/_lib/auth'
+import { db } from '@/app/_lib/prisma'
+import { User } from '@prisma/client'
+import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 
 const BookingsPage = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
   if (!session?.user) {
-    return redirect("/");
+    return redirect('/')
   }
 
   const [confirmedBookings, finishedBookings] = await Promise.all([
     db.booking.findMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as User).id,
         date: {
           gte: new Date(),
         },
@@ -27,7 +28,7 @@ const BookingsPage = async () => {
     }),
     db.booking.findMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as User).id,
         date: {
           lt: new Date(),
         },
@@ -37,7 +38,7 @@ const BookingsPage = async () => {
         barbershop: true,
       },
     }),
-  ]);
+  ])
 
   return (
     <>
@@ -48,7 +49,9 @@ const BookingsPage = async () => {
 
         {confirmedBookings.length > 0 && (
           <>
-            <h2 className="text-gray-400 uppercase font-bold text-sm mb-3">Confirmados</h2>
+            <h2 className="text-gray-400 uppercase font-bold text-sm mb-3">
+              Confirmados
+            </h2>
 
             <div className="flex flex-col gap-3">
               {confirmedBookings.map((booking) => (
@@ -60,7 +63,9 @@ const BookingsPage = async () => {
 
         {finishedBookings.length > 0 && (
           <>
-            <h2 className="text-gray-400 uppercase font-bold text-sm mt-6 mb-3">Finalizados</h2>
+            <h2 className="text-gray-400 uppercase font-bold text-sm mt-6 mb-3">
+              Finalizados
+            </h2>
 
             <div className="flex flex-col gap-3">
               {finishedBookings.map((booking) => (
@@ -71,7 +76,7 @@ const BookingsPage = async () => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default BookingsPage;
+export default BookingsPage
