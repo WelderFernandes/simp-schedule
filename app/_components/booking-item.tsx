@@ -20,7 +20,7 @@ import { Button } from './ui/button'
 import { cancelBooking } from '../_actions/cancel-booking'
 import { toast } from 'sonner'
 import { useRef, useState } from 'react'
-import { Loader2, MessageCircle } from 'lucide-react'
+import { Copy, Loader2, MessageCircle } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -62,7 +62,14 @@ const BookingItem = ({ booking }: BookingItemProps) => {
       // Desseleciona o texto
       window.getSelection()?.removeAllRanges()
       // Opcional: Exibe uma mensagem ou lógica adicional
-      alert('Texto copiado para a área de transferência!')
+      toast('Texto copiado para a área de transferência!', {
+        description: 'Pix copiado, agora pode ser usado para pagar a reserva.',
+        duration: 6000,
+        position: 'bottom-right',
+        icon: <Copy size={18} />,
+      })
+
+      // alert('Texto copiado para a área de transferência!')
     }
   }
 
@@ -176,10 +183,11 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                 />
               </div>
               <Button
-                className="mb-2 w-full"
+                className="mb-2 w-full flex gap-2 justify-center"
                 variant="outline"
                 onClick={handleCopyToClipboard}
               >
+                <Copy size="18" />
                 Copiar
               </Button>
               <h2 className="text-gray-400">
