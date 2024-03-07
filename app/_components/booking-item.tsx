@@ -41,6 +41,7 @@ interface BookingItemProps {
     include: {
       service: true
       barbershop: true
+      status: true
     }
   }>
 }
@@ -86,6 +87,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
       setIsDeleteLoading(false)
     }
   }
+  console.log({ booking })
 
   return (
     <Sheet>
@@ -97,7 +99,8 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                 variant={isBookingConfirmed ? 'default' : 'secondary'}
                 className="w-fit"
               >
-                {isBookingConfirmed ? 'Confirmado' : 'Finalizado'}
+                {/* {isBookingConfirmed ? 'Confirmado' : 'Finalizado'} */}
+                {booking.status.name === 'Pending' ? 'Pendente' : 'Confirmado'}
               </Badge>
               <h2 className="font-bold">{booking.service.name}</h2>
 

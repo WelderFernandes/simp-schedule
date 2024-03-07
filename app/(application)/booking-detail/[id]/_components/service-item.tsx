@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/app/_components/ui/sheet'
-import { Barbershop, Booking, Service, User } from '@prisma/client'
+import { Barbershop, Booking, Service } from '@prisma/client'
 import { ptBR } from 'date-fns/locale'
 import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -45,6 +45,7 @@ const ServiceItem = ({
   const [submitIsLoading, setSubmitIsLoading] = useState(false)
   const [sheetIsOpen, setSheetIsOpen] = useState(false)
   const [dayBookings, setDayBookings] = useState<Booking[]>([])
+
   useEffect(() => {
     if (!date) {
       return
@@ -85,11 +86,12 @@ const ServiceItem = ({
       const dateMinutes = Number(hour.split(':')[1])
 
       const newDate = setMinutes(setHours(date, dateHour), dateMinutes)
+
       await saveBooking({
         serviceId: service.id,
         barbershopId: barbershop.id,
         date: newDate,
-        userId: (data.user as User).id,
+        userId: (data.user as any).id,
       })
 
       setSheetIsOpen(false)

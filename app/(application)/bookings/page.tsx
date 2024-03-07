@@ -24,6 +24,7 @@ const BookingsPage = async () => {
       include: {
         service: true,
         barbershop: true,
+        status: true,
       },
     }),
     db.booking.findMany({
@@ -36,6 +37,7 @@ const BookingsPage = async () => {
       include: {
         service: true,
         barbershop: true,
+        status: true,
       },
     }),
   ])
@@ -49,8 +51,8 @@ const BookingsPage = async () => {
 
         {confirmedBookings.length > 0 && (
           <>
-            <h2 className="text-gray-400 uppercase font-bold text-sm mb-3">
-              Confirmados
+            <h2 className="text-orange-400 uppercase font-bold text-sm mb-3">
+              PENDENTES
             </h2>
 
             <div className="flex flex-col gap-3">
